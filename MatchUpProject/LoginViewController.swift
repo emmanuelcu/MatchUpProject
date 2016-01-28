@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import Parse
+import FBSDKLoginKit
+import ParseFacebookUtilsV4
+
 
 class LoginViewController: UIViewController {
 
@@ -20,6 +24,37 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK: - IBActions
+    
+    @IBAction func loginButtonPressed(sender: UIButton) {
+        
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile","email"]) { (user:PFUser?, error:NSError?) -> Void in
+            if (error != nil){
+                //Display the alert message
+                
+                let myAlert = UIAlertController(title: "Log In Error", message: "There was an error while you tried to login", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+                
+                myAlert.addAction(okAction)
+                self.presentViewController(myAlert, animated: true, completion: nil)
+                
+                return
+                
+            }
+            
+            print(user)
+            print("Current user token=\(FBSDKAccessToken.currentAccessToken().tokenString)")
+            
+            print("Current user ID =\(FBSDKAccessToken.currentAccessToken().userID)")
+            
+
+            
+        }
+        
+    }
+    
     
 
     /*
